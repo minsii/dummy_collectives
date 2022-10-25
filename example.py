@@ -12,11 +12,12 @@ dist.init_process_group("dummy", rank=0, world_size=1)
 
 x = torch.ones(6)
 dist.all_reduce(x)
-y = x.cuda()
-dist.all_reduce(y)
-
 print(f"cpu allreduce: {x}")
-print(f"cuda allreduce: {y}")
+
+if torch.cuda.is_available():
+    y = x.cuda()
+    dist.all_reduce(y)
+    print(f"cuda allreduce: {y}")
 
 try:
     dist.broadcast(x, 0)
