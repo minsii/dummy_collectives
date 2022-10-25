@@ -3,19 +3,19 @@
 namespace c10d {
 
 
-bool ProcessGroupDummy::WorkDummy::isCompleted() {
+bool WorkDummy::isCompleted() {
   return true;
 }
 
-bool ProcessGroupDummy::WorkDummy::isSuccess() const {
+bool WorkDummy::isSuccess() const {
   return true;
 }
 
-bool ProcessGroupDummy::WorkDummy::wait(std::chrono::milliseconds /* unused */) {
+bool WorkDummy::wait(std::chrono::milliseconds /* unused */) {
   return true;
 }
 
-c10::intrusive_ptr<c10::ivalue::Future> ProcessGroupDummy::WorkDummy::getFuture() {
+c10::intrusive_ptr<c10::ivalue::Future> WorkDummy::getFuture() {
   return future_;
 }
 
@@ -26,7 +26,7 @@ ProcessGroupDummy::ProcessGroupDummy(int rank, int size)
 
 // This is a dummy allgather that sets all output tensors to zero
 // Modify the implementation to conduct real communication asynchronously
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::allgather(
+c10::intrusive_ptr<Work> ProcessGroupDummy::allgather(
     std::vector<std::vector<at::Tensor>>& outputTensors,
     std::vector<at::Tensor>& inputTensors,
     const AllgatherOptions& /* unused */) {
@@ -42,7 +42,7 @@ c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::allgather(
   return c10::make_intrusive<WorkDummy>(OpType::ALLGATHER, std::move(future));
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::_allgather_base(
+c10::intrusive_ptr<Work> ProcessGroupDummy::_allgather_base(
     at::Tensor& /* unused */,
     at::Tensor& /* unused */,
     const AllgatherOptions& /* unused */) {
@@ -51,7 +51,7 @@ c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::_allgather_base(
 
 // This is a dummy allreduce that sets all output tensors to zero
 // Modify the implementation to conduct real communication asynchronously
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::allreduce(
+c10::intrusive_ptr<Work> ProcessGroupDummy::allreduce(
     std::vector<at::Tensor>& tensors,
     const AllreduceOptions& opts) {
   for (auto& tensor : tensors) {
@@ -64,20 +64,20 @@ c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::allreduce(
   return c10::make_intrusive<WorkDummy>(OpType::ALLGATHER, std::move(future));
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::allreduce_coalesced(
+c10::intrusive_ptr<Work> ProcessGroupDummy::allreduce_coalesced(
     std::vector<at::Tensor>& /* unused */,
     const AllreduceCoalescedOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::alltoall(
+c10::intrusive_ptr<Work> ProcessGroupDummy::alltoall(
     std::vector<at::Tensor>& /* unused */,
     std::vector<at::Tensor>& /* unused */,
     const AllToAllOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::alltoall_base(
+c10::intrusive_ptr<Work> ProcessGroupDummy::alltoall_base(
     at::Tensor& outputTensor,
     at::Tensor& inputTensor,
     std::vector<int64_t>& outputSplitSizes,
@@ -86,59 +86,59 @@ c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::alltoall_base(
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::barrier(
+c10::intrusive_ptr<Work> ProcessGroupDummy::barrier(
     const BarrierOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::broadcast(
+c10::intrusive_ptr<Work> ProcessGroupDummy::broadcast(
     std::vector<at::Tensor>& tensors,
     const BroadcastOptions& opts) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::gather(
+c10::intrusive_ptr<Work> ProcessGroupDummy::gather(
     std::vector<std::vector<at::Tensor>>& /* unused */,
     std::vector<at::Tensor>& /* unused */,
     const GatherOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::reduce(
+c10::intrusive_ptr<Work> ProcessGroupDummy::reduce(
     std::vector<at::Tensor>& /* unused */,
     const ReduceOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::reduce_scatter(
+c10::intrusive_ptr<Work> ProcessGroupDummy::reduce_scatter(
     std::vector<at::Tensor>& /* unused */,
     std::vector<std::vector<at::Tensor>>& /* unused */,
     const ReduceScatterOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::scatter(
+c10::intrusive_ptr<Work> ProcessGroupDummy::scatter(
     std::vector<at::Tensor>& /* unused */,
     std::vector<std::vector<at::Tensor>>& /* unused */,
     const ScatterOptions& /* unused */) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::send(
+c10::intrusive_ptr<Work> ProcessGroupDummy::send(
     std::vector<at::Tensor>& tensors,
     int dstRank,
     int tag) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::recv(
+c10::intrusive_ptr<Work> ProcessGroupDummy::recv(
     std::vector<at::Tensor>& tensors,
     int srcRank,
     int tag) {
   throw std::runtime_error("not supported");
 }
 
-c10::intrusive_ptr<ProcessGroup::Work> ProcessGroupDummy::recvAnysource(
+c10::intrusive_ptr<Work> ProcessGroupDummy::recvAnysource(
     std::vector<at::Tensor>& tensors,
     int tag) {
   throw std::runtime_error("not supported");
